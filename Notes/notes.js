@@ -38,6 +38,7 @@ class HouseService {
   static createHouse(house) {
     return $.post(this.url, house);
   }
+
   //ajax put request to update a house
   static updateHouse(house) {
     return $.ajax({
@@ -48,6 +49,7 @@ class HouseService {
       type: "PUT",
     });
   }
+
   //using AJAX delete a house by its ID
   static deleteHouse(id) {
     return $.ajax({
@@ -64,15 +66,17 @@ class DOMManager {
   static getAllHouses() {
     HouseService.getAllHouses().then((houses => this.render(houses)));
   }
-  //first grab the app div and clear it->forloop to go over houses and rerender
+  //first grab the app div and clear it
   static render(houses) {
     this.houses = houses;
     $("#app").empty();
+    //forloop to go over houses and rerenderDOM
     for (let house of houses) {
-      $("#app").prepend(
+      $("#app").append(
         `<div id="${house._id}" class="card">
             <div class="card-header">
-                 <h2>${this.name}</>
+                 <h2>${house.name}</h2>
+                 <button class="btn btn-danger" onclick = "DOMManager.deleteHouse('${house._id}')" >Delete </button>
             </div>
          </div>`
       );
