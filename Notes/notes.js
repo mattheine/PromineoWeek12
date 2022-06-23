@@ -64,7 +64,7 @@ class DOMManager {
   static houses;
   //calls house services to request info and renders it to the DOM
   static getAllHouses() {
-    HouseService.getAllHouses().then((houses => this.render(houses)));
+    HouseService.getAllHouses().then((houses) => this.render(houses));
   }
   //first grab the app div and clear it
   static render(houses) {
@@ -91,24 +91,49 @@ class DOMManager {
               <button id="${house._id}-new-room" onclick= "DOMManager.addRoom('${house._id}')" class = "btn btn-primary form-control">Add</button>
             </div><br>
          </div>`
-         );
-         //nested loop to render each room inside each house
-        for ( let room of house.rooms){
-          $(`#${house._id}`).find('.card-body').append(
+      );
+      //nested loop to render each room inside each house
+      for (let room of house.rooms) {
+        $(`#${house._id}`)
+          .find(".card-body")
+          .append(
             `<p>
             <span id="name-${room._id}"><strong>Name: <strong> ${room.name}</span>
             <span id="area-${room._id}"><strong>Area: <strong> ${room.area}</span>
           }
           <button class="btn btn-danger" onclick = "DOMManager.deleteRoom('${house._id}' , ${room._id}')">Delete Room</button>`
-          )}
-        }
-        console.log(houses)
-    };
+          );
+      }
+    }
+    console.log(houses);
+  }
+  //method to delete house on button click
+  static deleteHouse(id) {
+    HouseService.deleteHouse(id) //delete a house
+      .then(() => {
+        return HouseService.getAllHouses(); //http request to get all houses
+      })
+      .then((houses) => this.render(houses)); //re-render the page
+  }
+  //Method to Create New House
+  static createHouse(name){
+    HouseService.createHouse(new House(name))
+    .then(() => {
+      return HouseService.getAllHouses();
+    })
+  .then((houses) => this.render(houses));  
   }
 
+  //method to add Room to house
+}
 
-/*static deleteHouse(id){
-  return 
-}*/
 
+
+//RUNNING SCRIPT RUNNING SCRIPT RUNNING SCRIPT
+
+//grab new house button 
+$('#create-new-house').click(() => {
+  DOMManager.createHouse($('#new-house-name').val());//creat House method and grab name from input
+  $('#new-house-name').val("")//reset input value
+});
 DOMManager.getAllHouses();
