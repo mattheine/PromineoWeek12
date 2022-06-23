@@ -91,12 +91,19 @@ class DOMManager {
               <button id="${house._id}-new-room" onclick= "DOMManager.addRoom('${house._id}')" class = "btn btn-primary form-control">Add</button>
             </div><br>
          </div>`
+         );
          //nested loop to render each room inside each house
-      );
-    }
-    console.log(houses);
+        for ( let room of house.rooms){
+          $(`#${house._id}`).find('.card-body').append(
+            `<p>
+            <span id="name-${room._id}"><strong>Name: <strong> ${room.name}</span>
+            <span id="area-${room._id}"><strong>Area: <strong> ${room.area}</span>
+          }`
+          )}
+        }
+    };
   }
-}
+
 
 /*static deleteHouse(id){
   return 
