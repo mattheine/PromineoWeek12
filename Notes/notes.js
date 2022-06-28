@@ -127,7 +127,6 @@ class DOMManager {
 
   //method to add Room to house
   static addRoom(id){
-    console.log(this.houses)
     for (let house of this.houses){
       if(house._id == id){
         //push a new room to rooms array on the house we found
